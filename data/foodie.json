@@ -1,22 +1,6 @@
 {
   "items": [
     {
-      "id": "ejemplo-1",
-      "sample": true,
-      "name": "Sample Taquería (replace me)",
-      "city": "Tijuana",
-      "address": "Av. Revolución, Zona Centro, Tijuana, B.C.",
-      "cuisine": "Tacos",
-      "price": "$",
-      "rating": 4.5,
-      "date": "2026-11-01",
-      "video": "",
-      "photos": [],
-      "dishes": ["Tacos de adobada", "Quesataco"],
-      "review": "This is a sample entry so you can see the layout. Replace it with your first real review.",
-      "review_es": "Esta es una entrada de ejemplo para ver el diseño. Cámbiala por tu primera reseña real."
-    },
-    {
       "id": "ejemplo-2",
       "sample": true,
       "name": "Sample Burger Spot (replace me)",
@@ -28,7 +12,10 @@
       "date": "2026-10-20",
       "video": "",
       "photos": [],
-      "dishes": ["Double smash burger", "Fries"],
+      "dishes": [
+        "Double smash burger",
+        "Fries"
+      ],
       "review": "Another sample entry. Each restaurant gets its own page with the video, photos, map and rating.",
       "review_es": "Otra entrada de ejemplo. Cada restaurante tiene su propia página con video, fotos, mapa y calificación."
     }
