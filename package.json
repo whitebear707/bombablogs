@@ -1,0 +1,11 @@
+{
+  "name": "bombablogs",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Bomba Blogs site (static) + admin server (server/server.js, runs on Render)",
+  "scripts": { "start": "node server/server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
