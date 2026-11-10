@@ -12,26 +12,13 @@
       "date": "2026-10-28",
       "video": "",
       "photos": [],
-      "highlights": ["Malecón at sunset", "Fish tacos", "La Bufadora"],
+      "highlights": [
+        "Malecón at sunset",
+        "Fish tacos",
+        "La Bufadora"
+      ],
       "review": "Sample travel post: a place you visited, what to do there and your rating.",
       "review_es": "Publicación de ejemplo: un lugar que visitaste, qué hacer ahí y tu calificación."
-    },
-    {
-      "id": "ejemplo-hotel",
-      "sample": true,
-      "kind": "Hotel",
-      "name": "Sample Hotel (replace me)",
-      "city": "Rosarito",
-      "country": "México",
-      "address": "Rosarito, B.C.",
-      "rating": 4,
-      "pricePerNight": "$1,800 MXN",
-      "date": "2026-10-15",
-      "video": "",
-      "photos": [],
-      "highlights": ["Ocean view", "Pool", "Free parking"],
-      "review": "Sample stay: hotel, motel or Airbnb with price per night, what was good and what wasn't.",
-      "review_es": "Hospedaje de ejemplo: hotel, motel o Airbnb con precio por noche, lo bueno y lo malo."
     }
   ]
 }
