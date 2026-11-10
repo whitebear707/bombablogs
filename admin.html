@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Admin — Bomba Blogs</title>
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .adm { max-width: 860px; margin: 0 auto; padding: 20px 16px 60px; }
+  .panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; margin-bottom: 16px; }
+  label { display: block; font-size: .8rem; font-weight: 800; color: var(--gold2); text-transform: uppercase; letter-spacing: 1px; margin: 12px 0 5px; }
+  input, select, textarea { width: 100%; background: var(--bg2); color: var(--ink); border: 1.5px solid var(--line); border-radius: 12px; padding: 11px 13px; font-family: inherit; font-size: .95rem; }
+  input:focus, select:focus, textarea:focus { outline: none; border-color: var(--pink); }
+  textarea { min-height: 110px; resize: vertical; }
+  .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .row2 { grid-template-columns: 1fr; } }
+  .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
+  .tabs button { flex: 1; }
+  .tabs .on { background: linear-gradient(180deg, var(--gold2), var(--gold)); color: #1b1200; border-color: transparent; }
+  .item { display: flex; gap: 12px; align-items: center; padding: 10px; border-bottom: 1px solid var(--line); }
+  .item:last-child { border-bottom: none; }
+  .item img, .item .ph { width: 64px; height: 44px; object-fit: cover; border-radius: 8px; background: var(--bg2); flex-shrink: 0; display: flex; align-items: center; justify-content: center; }
+  .item .nm { flex: 1; min-width: 0; }
+  .item .nm b { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rate { display: flex; gap: 4px; font-size: 2rem; cursor: pointer; user-select: none; }
+  .rate span { color: #43356b; position: relative; }
+  .rate span.on { color: var(--gold); }
+  .rate span.half { background: linear-gradient(90deg, var(--gold) 50%, #43356b 50%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .pics { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 8px; margin-top: 8px; }
+  .pic { position: relative; aspect-ratio: 1; border-radius: 10px; overflow: hidden; background: var(--bg2); }
+  .pic img { width: 100%; height: 100%; object-fit: cover; }
+  .pic .x { position: absolute; top: 4px; right: 4px; background: rgba(0,0,0,.75); color: #fff; border: none; border-radius: 8px; padding: 2px 8px; cursor: pointer; font-weight: 800; }
+  .pic .cov { position: absolute; left: 4px; bottom: 4px; background: var(--gold); color: #1b1200; border-radius: 6px; padding: 1px 6px; font-size: .7rem; font-weight: 800; }
+  .pic .mv { position: absolute; left: 4px; top: 4px; background: rgba(0,0,0,.75); color: #fff; border: none; border-radius: 8px; padding: 2px 7px; cursor: pointer; font-weight: 800; }
+  .toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: #1b5e20; color: #fff; padding: 12px 20px; border-radius: 12px; font-weight: 700; z-index: 99; box-shadow: 0 6px 24px rgba(0,0,0,.4); }
+  .toast.err { background: #b71c1c; }
+  .hint { color: var(--muted); font-size: .82rem; margin-top: 4px; }
+  .hide { display: none !important; }
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><img src="img/icon.png" alt=""><span>Bomba Admin</span></a>
+  <button class="btn btn-ghost hide" id="logout">Log out</button>
+</div></header>
+
+<div class="adm">
+  <!-- Login -->
+  <div class="panel" id="login-box" style="max-width:380px;margin:40px auto;">
+    <h2 style="margin:0 0 6px;">🔐 Log in</h2>
+    <div class="hint" id="wake">The first login after a while can take up to a minute while the server wakes up.</div>
+    <label>Password</label>
+    <input type="password" id="pw" autocomplete="current-password">
+    <button class="btn btn-gold" id="login-btn" style="margin-top:14px;width:100%;justify-content:center;">Log in</button>
+  </div>
+
+  <!-- List -->
+  <div id="app" class="hide">
+    <div class="tabs">
+      <button class="btn btn-ghost on" data-sec="foodie">🍔 Foodie</button>
+      <button class="btn btn-ghost" data-sec="travel">✈️ Travel</button>
+    </div>
+    <div class="panel">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+        <b id="list-title">Foodie posts</b>
+        <button class="btn btn-gold" id="new-btn">＋ New post</button>
+      </div>
+      <div id="list" style="margin-top:8px;"></div>
+    </div>
+  </div>
+
+  <!-- Editor -->
+  <div id="editor" class="hide">
+    <button class="btn btn-ghost" id="cancel" style="margin-bottom:12px;">← Back to list</button>
+    <div class="panel">
+      <h2 id="ed-title" style="margin:0;">New post</h2>
+      <label>Name *</label><input id="f-name" maxlength="120" placeholder="Restaurant, place or hotel name">
+      <div id="kind-row"><label>Type</label>
+        <select id="f-kind"><option value="Place">📍 Place I visited</option><option value="Hotel">🏨 Hotel</option><option value="Motel">🛏️ Motel</option><option value="Airbnb">🏡 Airbnb</option></select></div>
+      <div class="row2">
+        <div><label>City</label><input id="f-city" maxlength="80"></div>
+        <div><label>Country</label><input id="f-country" maxlength="60" placeholder="México"></div>
+      </div>
+      <label>Address</label><input id="f-address" maxlength="200" placeholder="Used for the map">
+      <div class="row2" id="food-row">
+        <div><label>Food type</label><input id="f-cuisine" maxlength="60" placeholder="Tacos, Sushi, Burgers…" list="cuisines"><datalist id="cuisines"></datalist></div>
+        <div><label>Price</label><select id="f-price"><option value="">—</option><option>$</option><option>$$</option><option>$$$</option><option>$$$$</option></select></div>
+      </div>
+      <div id="night-row"><label>Price per night</label><input id="f-night" maxlength="40" placeholder="$1,800 MXN"></div>
+      <label>Rating <span id="rate-val" style="color:var(--ink);"></span></label>
+      <div class="rate" id="rate"></div>
+      <div class="hint">Tap the left half of a star for a half star.</div>
+      <div class="row2">
+        <div><label>Date</label><input type="date" id="f-date"></div>
+        <div><label>YouTube link</label><input id="f-video" placeholder="https://youtu.be/…"></div>
+      </div>
+      <label id="list-label">What I ordered</label>
+      <textarea id="f-list" style="min-height:80px;" placeholder="One per line"></textarea>
+      <label>My review (English)</label><textarea id="f-review"></textarea>
+      <label>Mi reseña (Español)</label><textarea id="f-review-es"></textarea>
+      <label>Photos</label>
+      <input type="file" id="f-photos" accept="image/*" multiple>
+      <div class="hint">The first photo is the cover. If there are no photos, the YouTube thumbnail is used.</div>
+      <div class="pics" id="pics"></div>
+      <button class="btn btn-gold" id="save" style="margin-top:18px;width:100%;justify-content:center;font-size:1rem;padding:13px;">💾 Save & publish</button>
+      <div class="hint" style="text-align:center;margin-top:8px;">It shows on the website about a minute after saving.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let SERVER = '';
+let TOKEN = (() => { try { return localStorage.getItem('bbToken') || ''; } catch (e) { return ''; } })();
+let SEC = 'foodie', ITEMS = [], EDIT = null, PHOTOS = [], RATING = 0;
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const ytId = v => { const m = String(v || '').match(/(?:youtu\.be\/|v=|embed\/|shorts\/|live\/)([A-Za-z0-9_-]{11})/); return m ? m[1] : ''; };
+function toast(msg, err) { const d = document.createElement('div'); d.className = 'toast' + (err ? ' err' : ''); d.textContent = msg; document.body.appendChild(d); setTimeout(() => d.remove(), 3500); }
+async function api(path, opts = {}) {
+  const r = await fetch(SERVER + path, { ...opts, headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + TOKEN, ...(opts.headers || {}) } });
+  const j = await r.json().catch(() => ({}));
+  if (r.status === 401 && path !== '/login') { logout(); throw new Error(j.error || 'Please log in again.'); }
+  if (!r.ok) throw new Error(j.error || 'Something went wrong (' + r.status + ')');
+  return j;
+}
+function show(which) { ['login-box', 'app', 'editor'].forEach(id => $(id).classList.toggle('hide', id !== which)); $('logout').classList.toggle('hide', which === 'login-box'); window.scrollTo(0, 0); }
+function logout() { TOKEN = ''; try { localStorage.removeItem('bbToken'); } catch (e) {} show('login-box'); }
+
+async function login() {
+  const b = $('login-btn'); b.disabled = true; b.textContent = 'Logging in…';
+  try {
+    const j = await api('/login', { method: 'POST', body: JSON.stringify({ password: $('pw').value }) });
+    TOKEN = j.token; try { localStorage.setItem('bbToken', TOKEN); } catch (e) {}
+    $('pw').value = ''; show('app'); loadList();
+  } catch (e) { toast(e.message, true); }
+  b.disabled = false; b.textContent = 'Log in';
+}
+async function loadList() {
+  $('list-title').textContent = SEC === 'foodie' ? 'Foodie posts' : 'Travel posts';
+  $('list').innerHTML = '<div class="hint">Loading…</div>';
+  try {
+    ITEMS = (await api('/posts/' + SEC)).items || [];
+    $('list').innerHTML = ITEMS.length ? ITEMS.map(it => {
+      const cov = it.photos && it.photos[0] ? (it.photos[0].startsWith('http') ? it.photos[0] : it.photos[0]) : (ytId(it.video) ? `https://i.ytimg.com/vi/${ytId(it.video)}/default.jpg` : '');
+      return `<div class="item">${cov ? `<img src="${esc(cov)}" alt="">` : '<div class="ph">📷</div>'}
+        <div class="nm"><b>${esc(it.name)}</b><span class="meta">★ ${esc(it.rating)} · ${esc(it.city || '')}${it.sample ? ' · sample' : ''}</span></div>
+        <button class="btn btn-ghost" onclick="edit('${esc(it.id)}')">Edit</button>
+        <button class="btn btn-ghost" style="color:#ff6b6b;" onclick="del('${esc(it.id)}')">🗑</button></div>`;
+    }).join('') : '<div class="hint">No posts yet. Tap “＋ New post”.</div>';
+  } catch (e) { $('list').innerHTML = `<div class="hint" style="color:#ff6b6b;">${esc(e.message)}</div>`; }
+}
+function drawRating() {
+  $('rate').innerHTML = [1, 2, 3, 4, 5].map(i => `<span data-i="${i}" class="${RATING >= i ? 'on' : RATING >= i - .5 ? 'half' : ''}">★</span>`).join('');
+  $('rate-val').textContent = RATING ? RATING + ' / 5' : '';
+}
+$('rate').onclick = e => {
+  const s = e.target.closest('span'); if (!s) return;
+  const i = Number(s.dataset.i), r = s.getBoundingClientRect();
+  RATING = (e.clientX - r.left) < r.width / 2 ? i - .5 : i;
+  drawRating();
+};
+function drawPics() {
+  $('pics').innerHTML = PHOTOS.map((p, i) => `<div class="pic"><img src="${esc(p.preview || p.path)}" alt="">
+    ${i === 0 ? '<span class="cov">COVER</span>' : `<button class="mv" title="Make cover" onclick="cover(${i})">★</button>`}
+    <button class="x" onclick="removePic(${i})">✕</button>${p.uploading ? '<div style="position:absolute;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;font-weight:800;">⏳</div>' : ''}</div>`).join('');
+}
+function cover(i) { PHOTOS.unshift(PHOTOS.splice(i, 1)[0]); drawPics(); }
+function removePic(i) { PHOTOS.splice(i, 1); drawPics(); }
+function shrink(file) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(), url = URL.createObjectURL(file);
+    img.onload = () => {
+      const max = 1600, k = Math.min(1, max / Math.max(img.width, img.height));
+      const c = document.createElement('canvas'); c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+      c.getContext('2d').drawImage(img, 0, 0, c.width, c.height); URL.revokeObjectURL(url);
+      resolve(c.toDataURL('image/jpeg', 0.82));
+    };
+    img.onerror = () => reject(new Error('Could not read that photo'));
+    img.src = url;
+  });
+}
+$('f-photos').onchange = async e => {
+  const files = [...e.target.files]; e.target.value = '';
+  for (const f of files) {
+    const p = { uploading: true };
+    try { p.preview = await shrink(f); } catch (er) { toast(er.message, true); continue; }
+    PHOTOS.push(p); drawPics();
+    try { const j = await api('/upload', { method: 'POST', body: JSON.stringify({ data: p.preview, name: $('f-name').value || 'photo' }) }); p.path = j.path; p.uploading = false; }
+    catch (er) { toast('Photo failed: ' + er.message, true); PHOTOS.splice(PHOTOS.indexOf(p), 1); }
+    drawPics();
+  }
+};
+function openEditor(it) {
+  EDIT = it ? it.id : null;
+  $('ed-title').textContent = it ? 'Edit post' : (SEC === 'foodie' ? 'New food post' : 'New travel post');
+  const travel = SEC === 'travel';
+  $('kind-row').classList.toggle('hide', !travel); $('night-row').classList.toggle('hide', !travel || ($('f-kind').value === 'Place'));
+  $('food-row').classList.toggle('hide', travel);
+  $('list-label').textContent = travel ? 'Highlights' : 'What I ordered';
+  const v = (k, d = '') => (it && it[k] != null ? it[k] : d);
+  $('f-name').value = v('name'); $('f-kind').value = v('kind', 'Place'); $('f-city').value = v('city'); $('f-country').value = v('country', 'México');
+  $('f-address').value = v('address'); $('f-cuisine').value = v('cuisine'); $('f-price').value = v('price'); $('f-night').value = v('pricePerNight');
+  $('f-date').value = v('date', new Date().toLocaleDateString('en-CA')); $('f-video').value = v('video');
+  $('f-list').value = (v(travel ? 'highlights' : 'dishes', []) || []).join('\n');
+  $('f-review').value = v('review'); $('f-review-es').value = v('review_es');
+  RATING = Number(v('rating', 0)) || 0; drawRating();
+  PHOTOS = (v('photos', []) || []).map(p => ({ path: p, preview: p })); drawPics();
+  $('cuisines').innerHTML = [...new Set(ITEMS.map(x => x.cuisine).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
+  $('night-row').classList.toggle('hide', !travel || $('f-kind').value === 'Place');
+  show('editor');
+}
+$('f-kind').onchange = () => $('night-row').classList.toggle('hide', $('f-kind').value === 'Place');
+function edit(id) { openEditor(ITEMS.find(x => x.id === id)); }
+async function del(id) {
+  const it = ITEMS.find(x => x.id === id); if (!it || !confirm(`Delete “${it.name}”? This also removes its photos.`)) return;
+  try { await api(`/posts/${SEC}/${encodeURIComponent(id)}`, { method: 'DELETE' }); toast('Deleted'); loadList(); } catch (e) { toast(e.message, true); }
+}
+$('save').onclick = async () => {
+  if (!$('f-name').value.trim()) return toast('Add the name first', true);
+  if (PHOTOS.some(p => p.uploading)) return toast('Wait for the photos to finish uploading', true);
+  if (!RATING && !confirm('No rating yet. Save anyway?')) return;
+  const travel = SEC === 'travel', lines = $('f-list').value.split('\n').map(s => s.trim()).filter(Boolean);
+  const body = { id: EDIT || '', name: $('f-name').value, city: $('f-city').value, country: $('f-country').value, address: $('f-address').value,
+    rating: RATING, date: $('f-date').value, video: $('f-video').value, review: $('f-review').value, review_es: $('f-review-es').value,
+    photos: PHOTOS.map(p => p.path).filter(Boolean) };
+  if (travel) Object.assign(body, { kind: $('f-kind').value, pricePerNight: $('f-night').value, highlights: lines });
+  else Object.assign(body, { cuisine: $('f-cuisine').value, price: $('f-price').value, dishes: lines });
+  const b = $('save'); b.disabled = true; b.textContent = 'Saving…';
+  try { await api('/posts/' + SEC, { method: 'POST', body: JSON.stringify(body) }); toast('✅ Saved — live on the site in about a minute'); show('app'); loadList(); }
+  catch (e) { toast(e.message, true); }
+  b.disabled = false; b.textContent = '💾 Save & publish';
+};
+document.querySelectorAll('.tabs button').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.tabs button').forEach(x => x.classList.toggle('on', x === b));
+  SEC = b.dataset.sec; loadList();
+});
+$('new-btn').onclick = () => openEditor(null);
+$('cancel').onclick = () => show('app');
+$('logout').onclick = logout;
+$('login-btn').onclick = login;
+$('pw').onkeydown = e => { if (e.key === 'Enter') login(); };
+
+fetch('data/site.json', { cache: 'no-cache' }).then(r => r.json()).then(s => {
+  SERVER = (s.adminServer || '').replace(/\/$/, '');
+  if (!SERVER) { $('login-box').innerHTML = '<h2 style="margin:0 0 6px;">Admin not connected yet</h2><div class="hint">The admin server address is missing in data/site.json (adminServer).</div>'; return; }
+  if (TOKEN) { show('app'); loadList(); } else show('login-box');
+}).catch(() => toast('Could not load settings', true));
+</script>
+</body>
+</html>

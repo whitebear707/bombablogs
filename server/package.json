@@ -1,0 +1,12 @@
+{
+  "name": "bombablogs-admin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Admin API for Bomba Blogs: saves posts and photos into the GitHub repo",
+  "main": "server.js",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}

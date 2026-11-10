@@ -1,4 +1,5 @@
 {
   "name": "Bomba Blogs",
-  "youtube": "https://www.youtube.com/"
+  "youtube": "https://www.youtube.com/",
+  "adminServer": "https://bombablogs-admin.onrender.com"
 }
