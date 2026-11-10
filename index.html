@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bomba Blogs — Restaurant reviews</title>
-<meta name="description" content="Restaurant reviews, ratings, photos and videos from the Bomba Blogs YouTube channel.">
-<meta property="og:title" content="Bomba Blogs">
-<meta property="og:description" content="Restaurant reviews, ratings, photos and videos.">
+<title>Bomba Blogs — Food & Travel</title>
+<meta name="description" content="Restaurant and travel reviews with ratings, photos and videos from the Bomba Blogs YouTube channel.">
+<meta property="og:title" content="Bomba Blogs — Food & Travel">
+<meta property="og:description" content="Restaurant and travel reviews with ratings, photos and videos from the Bomba Blogs YouTube channel.">
 <meta property="og:image" content="img/share.jpg">
 <meta name="theme-color" content="#07040f">
 <link rel="icon" type="image/png" href="img/favicon.png">
@@ -15,29 +15,33 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-page="home">
 <header class="top"><div class="wrap">
   <a class="brand" href="index.html"><img src="img/icon.png" alt=""><span>Bomba Blogs</span></a>
+  <nav class="nav"><a href="index.html" data-nav="home" data-t="home">Home</a><a href="foodie.html" data-nav="foodie">🍔 <span data-t="foodie">Foodie</span></a><a href="travel.html" data-nav="travel">✈️ <span data-t="travel">Travel</span></a></nav>
   <button class="btn btn-ghost lang" id="lang-btn">ES</button>
   <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ <span data-t="subscribe">Subscribe</span></a>
 </div></header>
-
 <section class="hero">
   <picture><source media="(max-width: 700px)" srcset="img/banner-sm.jpg"><img src="img/banner.jpg" alt="Bomba Blogs"></picture>
 </section>
-<div class="tagline"><h1>Bomba Blogs</h1><p data-t="tagline"></p></div>
-
+<div class="tagline"><h1 data-t="welcomeTitle">Welcome to Bomba Blogs</h1><p data-t="welcomeText"></p></div>
 <main class="wrap">
-  <div class="filters">
-    <input id="q" type="search" autocomplete="off">
-    <select id="city"></select>
-    <select id="type"></select>
-    <select id="sort"></select>
+  <div class="doors">
+    <a class="door door-food" href="foodie.html">
+      <div class="door-emoji">🍔🌮🍣</div>
+      <h2 data-t="foodieTitle">Foodie</h2><p data-t="foodieCard"></p>
+      <div class="door-foot"><span id="n-foodie"></span><span class="btn btn-gold"><span data-t="explore">Explore</span> →</span></div>
+    </a>
+    <a class="door door-travel" href="travel.html">
+      <div class="door-emoji">✈️🏨🌴</div>
+      <h2 data-t="travelTitle">Travel</h2><p data-t="travelCard"></p>
+      <div class="door-foot"><span id="n-travel"></span><span class="btn btn-gold"><span data-t="explore">Explore</span> →</span></div>
+    </a>
   </div>
-  <div class="count" id="count"></div>
-  <div class="grid" id="grid"></div>
+  <h2 class="section-title" data-t="latest">Latest posts</h2>
+  <div class="grid" id="latest"></div>
 </main>
-
 <footer><div class="wrap">
   <div style="display:flex;align-items:center;gap:10px;"><img src="img/icon.png" alt=""><span>© Bomba Blogs · <span data-t="footer"></span></span></div>
   <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ YouTube</a>

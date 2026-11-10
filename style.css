@@ -100,3 +100,37 @@ footer img { width: 34px; height: 34px; border-radius: 50%; }
   .top .btn-yt span { display: none; }
   .rhead { align-items: flex-start; }
 }
+
+/* nav */
+.nav { display: flex; gap: 4px; margin-right: 6px; }
+.nav a { color: var(--muted); text-decoration: none; font-weight: 700; font-size: .92rem; padding: 7px 12px; border-radius: 999px; white-space: nowrap; }
+.nav a:hover { color: var(--ink); background: rgba(255,255,255,.05); }
+.nav a.on { color: #1b1200; background: linear-gradient(180deg, var(--gold2), var(--gold)); }
+.brand { margin-right: auto; }
+@media (max-width: 760px) {
+  .top .wrap { flex-wrap: wrap; height: auto; padding-top: 8px; padding-bottom: 8px; row-gap: 6px; }
+  .nav { order: 5; width: 100%; justify-content: center; margin: 0; }
+}
+/* welcome doors */
+.doors { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 28px 0 36px; }
+@media (max-width: 700px) { .doors { grid-template-columns: 1fr; } }
+.door { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 26px 24px 22px; border-radius: 22px; text-decoration: none; color: var(--ink);
+  border: 1px solid var(--line); overflow: hidden; min-height: 230px; transition: transform .2s, box-shadow .2s, border-color .2s; }
+.door:hover { transform: translateY(-4px); }
+.door-food { background: radial-gradient(500px 220px at 90% 0%, rgba(255,62,165,.35), transparent 70%), linear-gradient(160deg, #2a0d33, #160d2b); }
+.door-travel { background: radial-gradient(500px 220px at 90% 0%, rgba(62,224,255,.28), transparent 70%), linear-gradient(160deg, #0d1f3a, #160d2b); }
+.door-food:hover { border-color: var(--pink); box-shadow: 0 12px 34px rgba(255,62,165,.2); }
+.door-travel:hover { border-color: var(--cyan); box-shadow: 0 12px 34px rgba(62,224,255,.18); }
+.door-emoji { font-size: 2.4rem; letter-spacing: 4px; }
+.door h2 { font-family: 'Bebas Neue', Impact, sans-serif; font-weight: 400; font-size: 2.8rem; letter-spacing: 2px; margin: 4px 0 0; line-height: 1; }
+.door p { color: #d6cbea; margin: 0; flex: 1; }
+.door-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; color: var(--muted); font-weight: 600; font-size: .9rem; }
+.section-title { font-family: 'Bebas Neue', Impact, sans-serif; font-weight: 400; letter-spacing: 1.5px; font-size: 2rem; margin: 0 0 14px; }
+/* section bands */
+.band { border-bottom: 1px solid var(--line); padding: 34px 0 26px; text-align: center; }
+.band-foodie { background: radial-gradient(700px 240px at 50% 0%, rgba(255,62,165,.28), transparent 70%); }
+.band-travel { background: radial-gradient(700px 240px at 50% 0%, rgba(62,224,255,.22), transparent 70%); }
+.band-emoji { font-size: 2.2rem; letter-spacing: 4px; }
+.band h1 { font-family: 'Bebas Neue', Impact, sans-serif; font-weight: 400; letter-spacing: 2px; font-size: clamp(2.6rem, 8vw, 4rem); margin: 4px 0 0; line-height: 1; }
+.band p { color: var(--muted); margin: 6px 0 0; }
+.thumb .noimg span { font-size: 3rem; }

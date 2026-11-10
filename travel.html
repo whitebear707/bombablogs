@@ -3,23 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Bomba Blogs</title>
-<meta name="theme-color" content="#07040f">
+<title>Travel — Bomba Blogs</title>
+<meta name="description" content="Bomba Blogs Travel: ratings, photos and videos.">
+<meta property="og:title" content="Travel — Bomba Blogs">
+<meta property="og:description" content="Bomba Blogs Travel: ratings, photos and videos.">
 <meta property="og:image" content="img/share.jpg">
+<meta name="theme-color" content="#07040f">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body data-page="travel">
 <header class="top"><div class="wrap">
   <a class="brand" href="index.html"><img src="img/icon.png" alt=""><span>Bomba Blogs</span></a>
+  <nav class="nav"><a href="index.html" data-nav="home" data-t="home">Home</a><a href="foodie.html" data-nav="foodie">🍔 <span data-t="foodie">Foodie</span></a><a href="travel.html" data-nav="travel">✈️ <span data-t="travel">Travel</span></a></nav>
   <button class="btn btn-ghost lang" id="lang-btn">ES</button>
   <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ <span data-t="subscribe">Subscribe</span></a>
 </div></header>
-<main class="wrap page" id="page"></main>
-<div class="lightbox" id="lightbox" onclick="this.classList.remove('on')"><img alt=""></div>
+<section class="band band-travel"><div class="wrap"><div class="band-emoji">✈️🏨🌴</div><h1 data-t="travelTitle">Travel</h1><p data-t="travelSub"></p></div></section>
+<main class="wrap">
+  <div class="filters">
+    <input id="q" type="search" autocomplete="off">
+    <select id="f1"></select>
+    <select id="f2"></select>
+    <select id="sort"></select>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+</main>
 <footer><div class="wrap">
   <div style="display:flex;align-items:center;gap:10px;"><img src="img/icon.png" alt=""><span>© Bomba Blogs · <span data-t="footer"></span></span></div>
   <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ YouTube</a>

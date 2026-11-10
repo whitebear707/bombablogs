@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Foodie — Bomba Blogs</title>
+<meta name="description" content="Bomba Blogs Foodie: ratings, photos and videos.">
+<meta property="og:title" content="Foodie — Bomba Blogs">
+<meta property="og:description" content="Bomba Blogs Foodie: ratings, photos and videos.">
+<meta property="og:image" content="img/share.jpg">
+<meta name="theme-color" content="#07040f">
+<link rel="icon" type="image/png" href="img/favicon.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body data-page="foodie">
+<header class="top"><div class="wrap">
+  <a class="brand" href="index.html"><img src="img/icon.png" alt=""><span>Bomba Blogs</span></a>
+  <nav class="nav"><a href="index.html" data-nav="home" data-t="home">Home</a><a href="foodie.html" data-nav="foodie">🍔 <span data-t="foodie">Foodie</span></a><a href="travel.html" data-nav="travel">✈️ <span data-t="travel">Travel</span></a></nav>
+  <button class="btn btn-ghost lang" id="lang-btn">ES</button>
+  <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ <span data-t="subscribe">Subscribe</span></a>
+</div></header>
+<section class="band band-foodie"><div class="wrap"><div class="band-emoji">🍔🌮🍣</div><h1 data-t="foodieTitle">Foodie</h1><p data-t="foodieSub"></p></div></section>
+<main class="wrap">
+  <div class="filters">
+    <input id="q" type="search" autocomplete="off">
+    <select id="f1"></select>
+    <select id="f2"></select>
+    <select id="sort"></select>
+  </div>
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+</main>
+<footer><div class="wrap">
+  <div style="display:flex;align-items:center;gap:10px;"><img src="img/icon.png" alt=""><span>© Bomba Blogs · <span data-t="footer"></span></span></div>
+  <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="#">▶ YouTube</a>
+</div></footer>
+<script src="app.js"></script>
+</body>
+</html>
