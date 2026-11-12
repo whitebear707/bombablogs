@@ -20,25 +20,6 @@
         "Taco Chorizo"
       ],
       "id": "tacos-bertha"
-    },
-    {
-      "id": "ejemplo-2",
-      "sample": true,
-      "name": "Sample Burger Spot (replace me)",
-      "city": "San Diego",
-      "address": "Gaslamp Quarter, San Diego, CA",
-      "cuisine": "Burgers",
-      "price": "$$",
-      "rating": 4,
-      "date": "2026-10-20",
-      "video": "",
-      "photos": [],
-      "dishes": [
-        "Double smash burger",
-        "Fries"
-      ],
-      "review": "Another sample entry. Each restaurant gets its own page with the video, photos, map and rating.",
-      "review_es": "Otra entrada de ejemplo. Cada restaurante tiene su propia página con video, fotos, mapa y calificación."
     }
   ]
 }
