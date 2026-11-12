@@ -1,24 +1,3 @@
 {
-  "items": [
-    {
-      "id": "ejemplo-lugar",
-      "sample": true,
-      "kind": "Place",
-      "name": "Sample Beach Town (replace me)",
-      "city": "Ensenada",
-      "country": "México",
-      "address": "Ensenada, B.C.",
-      "rating": 4.5,
-      "date": "2026-10-28",
-      "video": "",
-      "photos": [],
-      "highlights": [
-        "Malecón at sunset",
-        "Fish tacos",
-        "La Bufadora"
-      ],
-      "review": "Sample travel post: a place you visited, what to do there and your rating.",
-      "review_es": "Publicación de ejemplo: un lugar que visitaste, qué hacer ahí y tu calificación."
-    }
-  ]
+  "items": []
 }
