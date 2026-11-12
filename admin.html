@@ -84,7 +84,8 @@
         <div><label>City</label><input id="f-city" maxlength="80"></div>
         <div><label>Country</label><input id="f-country" maxlength="60" placeholder="México"></div>
       </div>
-      <label>Address</label><input id="f-address" maxlength="200" placeholder="Used for the map">
+      <label>Address</label><input id="f-address" maxlength="200" placeholder="Shown as text (optional)">
+      <label>Google Maps (optional)</label><textarea id="f-map" style="min-height:60px;" rows="2" maxlength="2000" placeholder="In Google Maps: Share → Embed a map → Copy HTML, then paste it here. A normal share link also works."></textarea>
       <div class="row2" id="food-row">
         <div><label>Food type</label><input id="f-cuisine" maxlength="60" placeholder="Tacos, Sushi, Burgers…" list="cuisines"><datalist id="cuisines"></datalist></div>
         <div><label>Price</label><select id="f-price"><option value="">—</option><option>$</option><option>$$</option><option>$$$</option><option>$$$$</option></select></div>
@@ -202,7 +203,7 @@ function openEditor(it) {
   $('list-label').textContent = travel ? 'Highlights' : 'What I ordered';
   const v = (k, d = '') => (it && it[k] != null ? it[k] : d);
   $('f-name').value = v('name'); $('f-kind').value = v('kind', 'Place'); $('f-city').value = v('city'); $('f-country').value = v('country', 'México');
-  $('f-address').value = v('address'); $('f-cuisine').value = v('cuisine'); $('f-price').value = v('price'); $('f-night').value = v('pricePerNight');
+  $('f-address').value = v('address'); $('f-map').value = v('map') || v('mapLink'); $('f-cuisine').value = v('cuisine'); $('f-price').value = v('price'); $('f-night').value = v('pricePerNight');
   $('f-date').value = v('date', new Date().toLocaleDateString('en-CA')); $('f-video').value = v('video');
   $('f-list').value = (v(travel ? 'highlights' : 'dishes', []) || []).join('\n');
   $('f-review').value = v('review'); $('f-review-es').value = v('review_es');
@@ -223,7 +224,7 @@ $('save').onclick = async () => {
   if (PHOTOS.some(p => p.uploading)) return toast('Wait for the photos to finish uploading', true);
   if (!RATING && !confirm('No rating yet. Save anyway?')) return;
   const travel = SEC === 'travel', lines = $('f-list').value.split('\n').map(s => s.trim()).filter(Boolean);
-  const body = { id: EDIT || '', name: $('f-name').value, city: $('f-city').value, country: $('f-country').value, address: $('f-address').value,
+  const body = { id: EDIT || '', name: $('f-name').value, city: $('f-city').value, country: $('f-country').value, address: $('f-address').value, map: $('f-map').value,
     rating: RATING, date: $('f-date').value, video: $('f-video').value, review: $('f-review').value, review_es: $('f-review-es').value,
     photos: PHOTOS.map(p => p.path).filter(Boolean) };
   if (travel) Object.assign(body, { kind: $('f-kind').value, pricePerNight: $('f-night').value, highlights: lines });

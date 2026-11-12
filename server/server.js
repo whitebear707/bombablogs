@@ -105,6 +105,18 @@ const serial = fn => (queue = queue.then(fn, fn));
 const str = (v, n = 200) => String(v == null ? '' : v).trim().slice(0, n);
 const list = (v, n = 20) => (Array.isArray(v) ? v : String(v || '').split('\n')).map(x => str(x, 120)).filter(Boolean).slice(0, n);
 const slug = s => str(s, 80).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'post';
+// Google Maps: accept the "Embed a map" HTML (or just its URL) → it becomes the map on the post.
+// A normal Google Maps share link is kept only as the "Open in Google Maps" button. Anything else is refused.
+function cleanMap(s) {
+  s = String(s || '').trim();
+  if (!s) return {};
+  const m = s.match(/src\s*=\s*["']([^"']+)["']/i);
+  const u = (m ? m[1] : s).replace(/&amp;/g, '&').trim();
+  if (u.length > 2000) return { bad: true };
+  if (/^https:\/\/www\.google\.com\/maps\/embed(\/v1\/[a-z]+)?\?[^\s"'<>]+$/i.test(u)) return { map: u };
+  if (/^https:\/\/(www\.google\.com\/maps[/?][^\s"'<>]*|maps\.google\.com\/[^\s"'<>]*|maps\.app\.goo\.gl\/[^\s"'<>]+|goo\.gl\/maps\/[^\s"'<>]+)$/i.test(u)) return { mapLink: u };
+  return { bad: true };
+}
 function cleanItem(sec, b) {
   const rating = Math.max(0, Math.min(5, Math.round((Number(b.rating) || 0) * 2) / 2));
   const it = {
@@ -115,6 +127,8 @@ function cleanItem(sec, b) {
     photos: (Array.isArray(b.photos) ? b.photos : []).map(p => str(p, 200)).filter(p => /^img\/posts\/[a-z0-9._-]+$/i.test(p) || /^https:\/\//.test(p)).slice(0, 30),
     review: str(b.review, 6000), review_es: str(b.review_es, 6000),
   };
+  const mp = cleanMap(b.map);
+  if (mp.bad) it.mapBad = true; else Object.assign(it, mp);
   if (sec === 'foodie') { it.cuisine = str(b.cuisine, 60); it.price = ['$', '$$', '$$$', '$$$$'].includes(b.price) ? b.price : ''; it.dishes = list(b.dishes); }
   else { it.kind = ['Place', 'Hotel', 'Motel', 'Airbnb'].includes(b.kind) ? b.kind : 'Place'; it.pricePerNight = str(b.pricePerNight, 40); it.highlights = list(b.highlights); }
   Object.keys(it).forEach(k => { if (it[k] === '' || (Array.isArray(it[k]) && !it[k].length && k !== 'photos')) delete it[k]; });
@@ -128,6 +142,7 @@ app.post('/posts/:sec', auth, (req, res) => {
   const sec = req.params.sec, path = SECTIONS[sec]; if (!path) return res.status(404).json({ error: 'Unknown section' });
   const it = cleanItem(sec, req.body || {});
   if (!it.name) return res.status(400).json({ error: 'The name is required.' });
+  if (it.mapBad) return res.status(400).json({ error: "That doesn't look like a Google Maps embed code or link. In Google Maps use Share → Embed a map → Copy HTML." });
   serial(async () => {
     const { data, sha } = await readJSON(path);
     data.items = data.items || [];

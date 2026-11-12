@@ -118,6 +118,9 @@ function renderItem() {
   document.title = `${r.name} — Bomba Blogs`;
   const vid = ytId(r.video), list = sec === 'foodie' ? r.dishes : r.highlights;
   const mapsQ = encodeURIComponent(r.mapsQuery || `${r.name}, ${r.address || place(r)}`);
+  const okEmbed = u => /^https:\/\/www\.google\.com\/maps\/embed(\/v1\/[a-z]+)?\?/i.test(u || ''), okLink = u => /^https:\/\//i.test(u || '');
+  const mapSrc = okEmbed(r.map) ? r.map : `https://maps.google.com/maps?q=${mapsQ}&output=embed`;
+  const mapHref = okLink(r.mapLink) ? r.mapLink : `https://www.google.com/maps/search/?api=1&query=${mapsQ}`;
   el.innerHTML = `
     <a class="back" href="${backHref}">${t('back')} · ${t(sec)}</a>
     <div class="rhead">
@@ -137,8 +140,8 @@ function renderItem() {
         ${r.pricePerNight ? `<div class="box"><h2>${t('perNight')}</h2><div style="font-size:1.4rem;font-weight:800;color:var(--gold2);">${esc(r.pricePerNight)}</div></div>` : ''}
         <div class="box"><h2>${t('where')}</h2>
           <div style="margin-bottom:10px;">${esc(r.address || place(r))}</div>
-          <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="https://maps.google.com/maps?q=${mapsQ}&output=embed"></iframe>
-          <a class="btn btn-gold" style="margin-top:12px;" target="_blank" rel="noopener" href="https://www.google.com/maps/search/?api=1&query=${mapsQ}">🗺 ${t('openMaps')}</a></div>
+          <iframe class="map" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="${esc(mapSrc)}"></iframe>
+          <a class="btn btn-gold" style="margin-top:12px;" target="_blank" rel="noopener" href="${esc(mapHref)}">🗺 ${t('openMaps')}</a></div>
         ${list && list.length ? `<div class="box"><h2>${t(sec === 'foodie' ? 'dishes' : 'highlights')}</h2><ul class="dishes">${list.map(d => `<li>${esc(d)}</li>`).join('')}</ul></div>` : ''}
         <a class="btn btn-yt" data-yt target="_blank" rel="noopener" href="${esc(DATA.site.youtube)}">▶ ${t('subscribe')}</a>
       </div>
