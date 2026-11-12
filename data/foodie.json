@@ -1,6 +1,27 @@
 {
   "items": [
     {
+      "name": "Tacos Bertha",
+      "city": "Tijuana",
+      "country": "México",
+      "address": "Cerro Capirote 20422, Amp. Guaycura, 22214 Tijuana, B.C.",
+      "rating": 4,
+      "date": "2022-05-12",
+      "video": "https://www.youtube.com/watch?v=0rl_JOhsdDY",
+      "photos": [
+        "img/posts/tacos-bertha-mwctbhaq5a1c.jpg",
+        "img/posts/tacos-bertha-mwctbioz2fc6.jpg"
+      ],
+      "map": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3364.7588552595976!2d-116.92085012467601!3d32.505873797793804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80d939002f44aa21%3A0x4da71bcc9017408!2sTacos%20Bertha!5e0!3m2!1sen!2smx!4v1794443101924!5m2!1sen!2smx",
+      "cuisine": "Tacos",
+      "price": "$$",
+      "dishes": [
+        "Taco Asada (beef)",
+        "Taco Chorizo"
+      ],
+      "id": "tacos-bertha"
+    },
+    {
       "id": "ejemplo-2",
       "sample": true,
       "name": "Sample Burger Spot (replace me)",
