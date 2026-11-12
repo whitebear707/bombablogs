@@ -72,7 +72,7 @@ function card(sec, r) {
   const img = coverOf(r);
   return `<a class="card" href="item.html?s=${sec}&id=${encodeURIComponent(r.id)}">
     <div class="thumb">${img ? `<img src="${esc(img)}" alt="${esc(r.name)}" loading="lazy">` : `<div class="noimg"><span>${sec === 'foodie' ? '🍔' : (KIND_ICON[r.kind] || '✈️')}</span></div>`}
-      <span class="badge-rate">★ ${esc(r.rating)}</span>${r.sample ? `<span class="sample">${t('sample')}</span>` : ''}${ytId(r.video) ? `<span class="play">${t('watch')}</span>` : ''}</div>
+      <span class="badge-rate">★ ${esc(r.rating)}/5</span>${r.sample ? `<span class="sample">${t('sample')}</span>` : ''}${ytId(r.video) ? `<span class="play">${t('watch')}</span>` : ''}</div>
     <div class="body"><h3>${esc(r.name)}</h3><div>${stars(r.rating)}</div>
       <div class="meta">📍 ${esc(place(r))}${r.price ? ' · ' + esc(r.price) : ''}${r.pricePerNight ? ' · ' + esc(r.pricePerNight) : ''}</div>
       <div style="margin-top:6px;">${tagOf(sec, r) ? `<span class="chip">${esc(tagOf(sec, r))}</span>` : ''}</div></div></a>`;
@@ -126,7 +126,7 @@ function renderItem() {
     <div class="rhead">
       <div><h1>${esc(r.name)}</h1>
         <div class="meta" style="margin-top:6px;">📍 ${esc(place(r))}${tagOf(sec, r) ? ' · ' + esc(tagOf(sec, r)) : ''}${r.price ? ' · ' + esc(r.price) : ''}${r.sample ? ` · <span class="sample" style="position:static;">${t('sample')}</span>` : ''}</div></div>
-      <div class="score"><b>${esc(r.rating)}</b>${stars(r.rating)}</div>
+      <div class="score"><b>${esc(r.rating)}<small>/5</small></b>${stars(r.rating)}</div>
     </div>
     <div class="layout">
       <div>
