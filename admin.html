@@ -101,7 +101,6 @@
       <label id="list-label">What I ordered</label>
       <textarea id="f-list" style="min-height:80px;" placeholder="One per line"></textarea>
       <label>My review (English)</label><textarea id="f-review"></textarea>
-      <label>Mi reseña (Español)</label><textarea id="f-review-es"></textarea>
       <label>Photos</label>
       <input type="file" id="f-photos" accept="image/*" multiple>
       <div class="hint">The first photo is the cover. If there are no photos, the YouTube thumbnail is used.</div>
@@ -206,7 +205,7 @@ function openEditor(it) {
   $('f-address').value = v('address'); $('f-map').value = v('map') || v('mapLink'); $('f-cuisine').value = v('cuisine'); $('f-price').value = v('price'); $('f-night').value = v('pricePerNight');
   $('f-date').value = v('date', new Date().toLocaleDateString('en-CA')); $('f-video').value = v('video');
   $('f-list').value = (v(travel ? 'highlights' : 'dishes', []) || []).join('\n');
-  $('f-review').value = v('review'); $('f-review-es').value = v('review_es');
+  $('f-review').value = v('review');
   RATING = Number(v('rating', 0)) || 0; drawRating();
   PHOTOS = (v('photos', []) || []).map(p => ({ path: p, preview: p })); drawPics();
   $('cuisines').innerHTML = [...new Set(ITEMS.map(x => x.cuisine).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
@@ -225,7 +224,7 @@ $('save').onclick = async () => {
   if (!RATING && !confirm('No rating yet. Save anyway?')) return;
   const travel = SEC === 'travel', lines = $('f-list').value.split('\n').map(s => s.trim()).filter(Boolean);
   const body = { id: EDIT || '', name: $('f-name').value, city: $('f-city').value, country: $('f-country').value, address: $('f-address').value, map: $('f-map').value,
-    rating: RATING, date: $('f-date').value, video: $('f-video').value, review: $('f-review').value, review_es: $('f-review-es').value,
+    rating: RATING, date: $('f-date').value, video: $('f-video').value, review: $('f-review').value,
     photos: PHOTOS.map(p => p.path).filter(Boolean) };
   if (travel) Object.assign(body, { kind: $('f-kind').value, pricePerNight: $('f-night').value, highlights: lines });
   else Object.assign(body, { cuisine: $('f-cuisine').value, price: $('f-price').value, dishes: lines });

@@ -125,7 +125,7 @@ function cleanItem(sec, b) {
     rating, date: /^\d{4}-\d{2}-\d{2}$/.test(b.date) ? b.date : new Date().toISOString().slice(0, 10),
     video: str(b.video, 200),
     photos: (Array.isArray(b.photos) ? b.photos : []).map(p => str(p, 200)).filter(p => /^img\/posts\/[a-z0-9._-]+$/i.test(p) || /^https:\/\//.test(p)).slice(0, 30),
-    review: str(b.review, 6000), review_es: str(b.review_es, 6000),
+    review: str(b.review, 6000),
   };
   const mp = cleanMap(b.map);
   if (mp.bad) it.mapBad = true; else Object.assign(it, mp);

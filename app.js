@@ -48,7 +48,7 @@ function stars(r) {
   for (let i = 1; i <= 5; i++) s += n >= i ? '★' : n >= i - .5 ? '<span class="half">★</span>' : '<span class="off">★</span>';
   return `<span class="stars" title="${n}/5">${s}</span>`;
 }
-const reviewOf = r => (LANG === 'es' && r.review_es) || r.review || r.review_es || '';
+const reviewOf = r => r.review || '';
 const coverOf = r => (r.photos && r.photos.length) ? r.photos[0] : (ytId(r.video) ? `https://i.ytimg.com/vi/${ytId(r.video)}/hqdefault.jpg` : '');
 const kindLabel = k => (t('kinds')[k] || k || '');
 const place = r => [r.city, r.country].filter(Boolean).join(', ');
