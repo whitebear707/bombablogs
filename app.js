@@ -13,6 +13,7 @@ const T = {
     dishes: 'What I ordered', highlights: 'Highlights', review: 'My review', perNight: 'Per night', notFound: 'Post not found.',
     sample: 'SAMPLE', watch: '▶ Video', footer: 'Food, travel & good vibes.',
     kinds: { Place: 'Place', Hotel: 'Hotel', Motel: 'Motel', Airbnb: 'Airbnb' },
+    scoresTitle: 'Scores', sc: { overall: 'Overall', price: 'Price', cleanliness: 'Cleanliness', comfort: 'Comfort', amenities: 'Amenities', privacy: 'Privacy', checkin: 'Check-in / check-out', location: 'Location', foodoptions: 'Food & drink options', foodreview: 'Food & drink review', staff: 'Staff' },
   },
   es: {
     home: 'Inicio', foodie: 'Foodie', travel: 'Viajes', subscribe: 'Suscríbete', back: '← Regresar',
@@ -27,6 +28,7 @@ const T = {
     dishes: 'Lo que pedí', highlights: 'Lo mejor', review: 'Mi reseña', perNight: 'Por noche', notFound: 'Publicación no encontrada.',
     sample: 'EJEMPLO', watch: '▶ Video', footer: 'Comida, viajes y buena vibra.',
     kinds: { Place: 'Lugar', Hotel: 'Hotel', Motel: 'Motel', Airbnb: 'Airbnb' },
+    scoresTitle: 'Calificaciones', sc: { overall: 'General', price: 'Precio', cleanliness: 'Limpieza', comfort: 'Comodidad', amenities: 'Amenidades', privacy: 'Privacidad', checkin: 'Check-in / check-out', location: 'Ubicación', foodoptions: 'Opciones de comida y bebida', foodreview: 'Reseña de comida y bebida', staff: 'Personal' },
   },
 };
 const KIND_ICON = { Place: '📍', Hotel: '🏨', Motel: '🛏️', Airbnb: '🏡' };
@@ -110,6 +112,13 @@ function setupList(sec) {
 }
 
 // ── One post ──
+const SC_ORDER = ['price', 'cleanliness', 'comfort', 'amenities', 'privacy', 'checkin', 'location', 'foodoptions', 'foodreview', 'staff'];
+function scoresBox(r) {
+  const s = r.scores; if (!s) return '';
+  const rows = SC_ORDER.filter(k => typeof s[k] === 'number').map(k => `<div class="sc"><span>${esc(t('sc')[k])}</span><div class="bar"><i style="width:${Math.max(0, Math.min(100, s[k] * 10))}%"></i></div><b>${esc(s[k])}</b></div>`).join('');
+  const all = typeof s.overall === 'number' ? `<div class="sc-all"><span>${esc(t('sc').overall)}</span><b>${esc(s.overall)}<small>/10</small></b></div>` : '';
+  return all || rows ? `<div class="box"><h2>${t('scoresTitle')}</h2>${all}${rows}</div>` : '';
+}
 function renderItem() {
   const qs = new URLSearchParams(location.search), sec = qs.get('s') === 'travel' ? 'travel' : 'foodie';
   const r = DATA[sec].find(x => x.id === qs.get('id'));
@@ -137,6 +146,7 @@ function renderItem() {
         ${r.photos && r.photos.length ? `<div class="box"><h2>${t('photos')}</h2><div class="photos">${r.photos.map(p => `<img src="${esc(p)}" alt="${esc(r.name)}" loading="lazy" onclick="zoom(this.src)">`).join('')}</div></div>` : ''}
       </div>
       <div>
+        ${scoresBox(r)}
         ${r.pricePerNight ? `<div class="box"><h2>${t('perNight')}</h2><div style="font-size:1.4rem;font-weight:800;color:var(--gold2);">${esc(r.pricePerNight)}</div></div>` : ''}
         <div class="box"><h2>${t('where')}</h2>
           <div style="margin-bottom:10px;">${esc(r.address || place(r))}</div>

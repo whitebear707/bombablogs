@@ -91,6 +91,7 @@
         <div><label>Price</label><select id="f-price"><option value="">—</option><option>$</option><option>$$</option><option>$$$</option><option>$$$$</option></select></div>
       </div>
       <div id="night-row"><label>Price per night</label><input id="f-night" maxlength="40" placeholder="$1,800 MXN"></div>
+      <div id="scores-box"><label>Scores out of 10 <span style="font-weight:400;opacity:.7;">(leave blank what doesn't apply)</span></label><div class="row2" id="scores-grid"></div></div>
       <label>Rating <span id="rate-val" style="color:var(--ink);"></span></label>
       <div class="rate" id="rate"></div>
       <div class="hint">Tap the left half of a star for a half star.</div>
@@ -193,6 +194,10 @@ $('f-photos').onchange = async e => {
     drawPics();
   }
 };
+const SCORE_FIELDS = [['price', 'Price'], ['cleanliness', 'Cleanliness'], ['comfort', 'Comfort'], ['amenities', 'Amenities'], ['privacy', 'Privacy'],
+  ['checkin', 'Check-in / check-out process'], ['location', 'Location'], ['foodoptions', 'Food & drink options'], ['foodreview', 'Food & drink review'], ['staff', 'Staff'], ['overall', 'Overall (blank = average)']];
+$('scores-grid').innerHTML = SCORE_FIELDS.map(([k, l]) => `<div><label style="font-size:.8rem;">${l}</label><input type="number" id="sc-${k}" min="0" max="10" step="0.5" inputmode="decimal" placeholder="0–10"></div>`).join('');
+const isLodging = () => SEC === 'travel' && $('f-kind').value !== 'Place';
 function openEditor(it) {
   EDIT = it ? it.id : null;
   $('ed-title').textContent = it ? 'Edit post' : (SEC === 'foodie' ? 'New food post' : 'New travel post');
@@ -206,13 +211,14 @@ function openEditor(it) {
   $('f-date').value = v('date', new Date().toLocaleDateString('en-CA')); $('f-video').value = v('video');
   $('f-list').value = (v(travel ? 'highlights' : 'dishes', []) || []).join('\n');
   $('f-review').value = v('review');
+  SCORE_FIELDS.forEach(([k]) => { $('sc-' + k).value = (it && it.scores && it.scores[k] != null) ? it.scores[k] : ''; });
   RATING = Number(v('rating', 0)) || 0; drawRating();
   PHOTOS = (v('photos', []) || []).map(p => ({ path: p, preview: p })); drawPics();
   $('cuisines').innerHTML = [...new Set(ITEMS.map(x => x.cuisine).filter(Boolean))].map(c => `<option value="${esc(c)}">`).join('');
-  $('night-row').classList.toggle('hide', !travel || $('f-kind').value === 'Place');
+  $('night-row').classList.toggle('hide', !travel || $('f-kind').value === 'Place'); $('scores-box').classList.toggle('hide', !isLodging());
   show('editor');
 }
-$('f-kind').onchange = () => $('night-row').classList.toggle('hide', $('f-kind').value === 'Place');
+$('f-kind').onchange = () => { $('night-row').classList.toggle('hide', $('f-kind').value === 'Place'); $('scores-box').classList.toggle('hide', !isLodging()); };
 function edit(id) { openEditor(ITEMS.find(x => x.id === id)); }
 async function del(id) {
   const it = ITEMS.find(x => x.id === id); if (!it || !confirm(`Delete “${it.name}”? This also removes its photos.`)) return;
@@ -221,12 +227,16 @@ async function del(id) {
 $('save').onclick = async () => {
   if (!$('f-name').value.trim()) return toast('Add the name first', true);
   if (PHOTOS.some(p => p.uploading)) return toast('Wait for the photos to finish uploading', true);
-  if (!RATING && !confirm('No rating yet. Save anyway?')) return;
+  const anyScore = isLodging() && SCORE_FIELDS.some(([k]) => $('sc-' + k).value !== '');
+  if (!RATING && !anyScore && !confirm('No rating yet. Save anyway?')) return;
   const travel = SEC === 'travel', lines = $('f-list').value.split('\n').map(s => s.trim()).filter(Boolean);
   const body = { id: EDIT || '', name: $('f-name').value, city: $('f-city').value, country: $('f-country').value, address: $('f-address').value, map: $('f-map').value,
     rating: RATING, date: $('f-date').value, video: $('f-video').value, review: $('f-review').value,
     photos: PHOTOS.map(p => p.path).filter(Boolean) };
-  if (travel) Object.assign(body, { kind: $('f-kind').value, pricePerNight: $('f-night').value, highlights: lines });
+  if (travel) {
+    Object.assign(body, { kind: $('f-kind').value, pricePerNight: $('f-night').value, highlights: lines });
+    if (isLodging()) body.scores = Object.fromEntries(SCORE_FIELDS.map(([k]) => [k, $('sc-' + k).value]));
+  }
   else Object.assign(body, { cuisine: $('f-cuisine').value, price: $('f-price').value, dishes: lines });
   const b = $('save'); b.disabled = true; b.textContent = 'Saving…';
   try { await api('/posts/' + SEC, { method: 'POST', body: JSON.stringify(body) }); toast('✅ Saved — live on the site in about a minute'); show('app'); loadList(); }

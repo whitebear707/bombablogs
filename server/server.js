@@ -117,6 +117,19 @@ function cleanMap(s) {
   if (/^https:\/\/(www\.google\.com\/maps[/?][^\s"'<>]*|maps\.google\.com\/[^\s"'<>]*|maps\.app\.goo\.gl\/[^\s"'<>]+|goo\.gl\/maps\/[^\s"'<>]+)$/i.test(u)) return { mapLink: u };
   return { bad: true };
 }
+// Hotel / Motel / Airbnb scores, each out of 10 (halves allowed). "overall" is the average when left blank.
+const SCORE_KEYS = ['overall', 'price', 'cleanliness', 'comfort', 'amenities', 'privacy', 'checkin', 'location', 'foodoptions', 'foodreview', 'staff'];
+function cleanScores(s) {
+  const out = {}; s = s && typeof s === 'object' ? s : {};
+  for (const k of SCORE_KEYS) {
+    const raw = s[k]; if (raw === '' || raw == null) continue;
+    const n = Number(raw); if (!isFinite(n)) continue;
+    out[k] = Math.max(0, Math.min(10, Math.round(n * 2) / 2));
+  }
+  const rest = Object.keys(out).filter(k => k !== 'overall');
+  if (out.overall == null && rest.length) out.overall = Math.round(rest.reduce((a, k) => a + out[k], 0) / rest.length * 10) / 10;
+  return Object.keys(out).length ? out : null;
+}
 function cleanItem(sec, b) {
   const rating = Math.max(0, Math.min(5, Math.round((Number(b.rating) || 0) * 2) / 2));
   const it = {
@@ -130,7 +143,11 @@ function cleanItem(sec, b) {
   const mp = cleanMap(b.map);
   if (mp.bad) it.mapBad = true; else Object.assign(it, mp);
   if (sec === 'foodie') { it.cuisine = str(b.cuisine, 60); it.price = ['$', '$$', '$$$', '$$$$'].includes(b.price) ? b.price : ''; it.dishes = list(b.dishes); }
-  else { it.kind = ['Place', 'Hotel', 'Motel', 'Airbnb'].includes(b.kind) ? b.kind : 'Place'; it.pricePerNight = str(b.pricePerNight, 40); it.highlights = list(b.highlights); }
+  else { it.kind = ['Place', 'Hotel', 'Motel', 'Airbnb'].includes(b.kind) ? b.kind : 'Place'; it.pricePerNight = str(b.pricePerNight, 40); it.highlights = list(b.highlights);
+    if (it.kind !== 'Place') {
+      const sc = cleanScores(b.scores);
+      if (sc) { it.scores = sc; if (!it.rating && sc.overall != null) it.rating = Math.round(sc.overall) / 2; }   // stars = overall / 2 when no stars were given
+    } }
   Object.keys(it).forEach(k => { if (it[k] === '' || (Array.isArray(it[k]) && !it[k].length && k !== 'photos')) delete it[k]; });
   return it;
 }
